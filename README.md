@@ -2,5 +2,5 @@ Questo script serve per noleggiare i veicoli, avete a disposizione il config.lua
 
 Inserisci questo script all'interno delle resources e aggiungete nel vostro server.cfg 
 
-ensure noleggio
+``ensure noleggio``
 
