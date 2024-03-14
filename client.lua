@@ -4,9 +4,10 @@ Citizen.CreateThread(function()
 	createBlip()
 end)
 
-function createBlip()
-	for k, v in pairs(config.noleggio) do
-		local blip = AddBlipForCoord(v[k].ped['x'], v[k].ped['y'], v[k].ped['z'])
+createBlip = function ()
+    for k, a in pairs(config.noleggio) do
+        v = config.noleggio[k].ped
+		local blip = AddBlipForCoord(v['x'], v['y'], v['z'])
 		SetBlipSprite(blip, config.blip)
 		SetBlipDisplay(blip, 4)
 		SetBlipScale(blip, 0.7)
@@ -65,6 +66,9 @@ Citizen.CreateThread(function ()
                                     local vehicle = CreateVehicle(mezzo, pos, spawn['h'], true, false) 
                                     SetPedIntoVehicle(PlayerPedId(), vehicle, -1)
                                     TriggerServerEvent('noleggio:pc',prezzo)
+                                    local notifica = "Hai noleggiato questo veicolo per $"..prezzo
+                                    ESX.ShowNotification(notifica)
+                                    
                                 elseif banca >= prezzo then
                                     local mezzo = GetHashKey(model)
                                     RequestModel(mezzo)
@@ -78,12 +82,12 @@ Citizen.CreateThread(function ()
                                             plate = config.plate
                                         })
                                     end
-                                    
                                     SetPedIntoVehicle(PlayerPedId(), vehicle, -1)
                                     TriggerServerEvent('noleggio:pb',prezzo)
-                                    
+                                    local notifica = "Hai noleggiato questo veicolo per $"..prezzo
+                                    ESX.ShowNotification(notifica)
                                 else 
-                                    print('Non hai soldi')
+                                    ESX.ShowNotification("Non hai abbastanza soldi!")
                                 end
                             end})
                             lib.registerContext({ 
@@ -98,16 +102,4 @@ Citizen.CreateThread(function ()
             }
         })
     end
-end)
-
-RegisterCommand('soldibanca',function ()
-    local data = ESX.GetPlayerData()
-    for a,v in pairs(data.accounts) do
-        if v.name == 'bank' then
-            banca = v.money
-        elseif v.name == 'money' then
-            cashMoney = v.money
-        end
-    end
-    print("Hai "..banca )
 end)
